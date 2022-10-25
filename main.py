@@ -4,7 +4,7 @@ TOP_ENUM = "use std::str::FromStr;\n\npub enum %name% {\n"
 BOT_ENUM = "}\n\n"
 
 TOP_FROM = "impl FromStr for %name% {\n\ttype Err = ();\n\tfn from_str(input: &str) -> Result<%name%, Self::Err> {\n\t\tmatch input {\n"
-BOT_FROM = "_ => Err(()),\n}\n}\n}"
+BOT_FROM = "\t\t\t_ => Err(()),\n\t\t}\n\t}\n}\n"
 
 TOP_NAME = "impl %name% {\n\tpub fn name(&self) -> String { \n\t\tmatch *self {\n"
 BOT_NAME = "\t\t}\n\t}\n}"
@@ -34,7 +34,7 @@ def main():
     lines.append("")
     lines.append(TOP_FROM.replace("%name%", name))
     for e in input_lines:
-        lines.append("\t\t\t\"" + e[0] + "\"" + " => " + name + "::" + e[0] + "\n")
+        lines.append("\t\t\t\"" + e[0] + "\"" + " => Ok(" + name + "::" + e[0] + "),\n")
     lines.append(BOT_FROM)
     lines.append("")
     lines.append(TOP_NAME.replace("%name%", name))
